@@ -14,33 +14,28 @@ function parseData() {
 }
 
 function formatGroupedData(groupedData) {
-    const formattedData = Object.values(groupedData)
-        .flatMap(ranges => {
-            return ranges.map(range => {
-                // Format services with counts
-                const services = Object.entries(range.services)
-                    .map(([service, count]) => `${service} (${count})`)
-                    .join(', ');
+    // Format the output
+    const formattedData = Object.values(groupedData).map(range => {
+        // Format services with counts
+        const services = Object.entries(range.services)
+            .map(([service, count]) => `${service} (${count})`)
+            .join(', ');
 
-                // Format diagnoses with counts
-                const diagnoses = Object.entries(range.diagnoses)
-                    .map(([diagnosis, count]) => `${diagnosis} (${count})`)
-                    .join(', ');
+        // Format diagnoses with counts
+        const diagnoses = Object.entries(range.diagnoses)
+            .map(([diagnosis, count]) => `${diagnosis} (${count})`)
+            .join(', ');
 
-                return {
-                    startDate: range.startDate,
-                    formattedString: `${range.startDate} to ${range.endDate} - ${range.Location} - ${range.Agency} | Services: ${services} | Diagnoses: ${diagnoses}`
-                };
-            });
-        })
-        .sort((a, b) => new Date(a.startDate) - new Date(b.startDate)) // Sort by startDate
-        .map(item => item.formattedString); // Extract the formatted string
+    return `${range.startDate} to ${range.endDate} - ${range.Location} - ${range.Agency} | Services: ${services} | Diagnoses: ${diagnoses}`;
+});
+
 
     console.log(formattedData);
     return formattedData;
 }
 
 function groupByLocationAndAgency(sortedData) {
+    // Group by Location and Agency, and collapse date ranges
     const groupedData = sortedData.reduce((acc, row) => {
         const location = row.Location;
         const agency = row.Agency;
@@ -51,65 +46,51 @@ function groupByLocationAndAgency(sortedData) {
 
         // Initialize key if it doesn't exist
         if (!acc[key]) {
-            acc[key] = [];
-        }
-
-        // Get the last range for this key
-        const lastRange = acc[key][acc[key].length - 1];
-
-        // If the current date is contiguous with the last range, extend the range and update services/diagnoses
-        if (lastRange && new Date(lastRange.endDate) >= currentDate) {
-            lastRange.endDate = row.Date;
-
-            // Update service counts
-            if (!lastRange.services[row.Service]) {
-                lastRange.services[row.Service] = 1;
-            } else {
-                lastRange.services[row.Service]++;
-            }
-
-            // Combine all diagnoses into a single list
-            const diagnoses = [
-                row['Principle Diagnosis'],
-                row['Additional Diagnosis 2'],
-                row['Additional Diagnosis 3'],
-                row['Additional Diagnosis 4']
-            ].filter(diagnosis => diagnosis); // Remove empty values
-
-            // Update diagnosis counts
-            diagnoses.forEach(diagnosis => {
-                if (!lastRange.diagnoses[diagnosis]) {
-                    lastRange.diagnoses[diagnosis] = 1;
-                } else {
-                    lastRange.diagnoses[diagnosis]++;
-                }
-            });
-        } else {
-            // Otherwise, add a new range
-            const diagnoses = [
-                row['Principle Diagnosis'],
-                row['Additional Diagnosis 2'],
-                row['Additional Diagnosis 3'],
-                row['Additional Diagnosis 4']
-            ].filter(diagnosis => diagnosis); // Remove empty values
-
-            const diagnosisCounts = diagnoses.reduce((acc, diagnosis) => {
-                acc[diagnosis] = (acc[diagnosis] || 0) + 1;
-                return acc;
-            }, {});
-
-            acc[key].push({
+            acc[key] = {
                 startDate: row.Date,
                 endDate: row.Date,
                 Location: location,
                 Agency: agency,
-                services: { [row.Service]: 1 }, // Initialize service counts
-                diagnoses: diagnosisCounts // Initialize diagnosis counts
-            });
+                services: {},
+                diagnoses: {}
+            };
         }
+
+        // Get the range for this key
+        const range = acc[key];
+
+        // Update the end date if the current date is later
+        if (new Date(row.Date) > new Date(range.endDate)) {
+            range.endDate = row.Date;
+        }
+
+        // Update service counts
+        if (!range.services[row['CPT Code']]) {
+            range.services[row['CPT Code']] = 1;
+        } else {
+            range.services[row['CPT Code']]++;
+        }
+
+        // Combine all diagnoses into a single list
+        const diagnoses = [
+            row['Principle Diagnosis'],
+            row['Additional Diagnosis 2'],
+            row['Additional Diagnosis 3'],
+            row['Additional Diagnosis 4']
+        ].filter(diagnosis => diagnosis && diagnosis !== 'None'); // Remove empty values and "None"
+
+        // Update diagnosis counts
+        diagnoses.forEach(diagnosis => {
+            if (!range.diagnoses[diagnosis]) {
+                range.diagnoses[diagnosis] = 1;
+            } else {
+                range.diagnoses[diagnosis]++;
+            }
+        });
 
         return acc;
     }, {});
+
 
     console.log(groupedData);
     return groupedData;
