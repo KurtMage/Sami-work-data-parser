@@ -17,8 +17,16 @@ function formatGroupedData(groupedData) {
     const formattedData = Object.values(groupedData)
         .flatMap(ranges => {
             return ranges.map(range => {
-                const services = Array.from(range.services).join(', ');
-                const diagnoses = Array.from(range.diagnoses).join(', ');
+                // Format services with counts
+                const services = Object.entries(range.services)
+                    .map(([service, count]) => `${service} (${count})`)
+                    .join(', ');
+
+                // Format diagnoses with counts
+                const diagnoses = Object.entries(range.diagnoses)
+                    .map(([diagnosis, count]) => `${diagnosis} (${count})`)
+                    .join(', ');
+
                 return {
                     startDate: range.startDate,
                     formattedString: `${range.startDate} to ${range.endDate} - ${range.Location} - ${range.Agency} | Services: ${services} | Diagnoses: ${diagnoses}`
@@ -52,17 +60,51 @@ function groupByLocationAndAgency(sortedData) {
         // If the current date is contiguous with the last range, extend the range and update services/diagnoses
         if (lastRange && new Date(lastRange.endDate) >= currentDate) {
             lastRange.endDate = row.Date;
-            lastRange.services.add(row.Service);
-            lastRange.diagnoses.add(row.Diagnosis);
+
+            // Update service counts
+            if (!lastRange.services[row.Service]) {
+                lastRange.services[row.Service] = 1;
+            } else {
+                lastRange.services[row.Service]++;
+            }
+
+            // Combine all diagnoses into a single list
+            const diagnoses = [
+                row['Principle Diagnosis'],
+                row['Additional Diagnosis 2'],
+                row['Additional Diagnosis 3'],
+                row['Additional Diagnosis 4']
+            ].filter(diagnosis => diagnosis); // Remove empty values
+
+            // Update diagnosis counts
+            diagnoses.forEach(diagnosis => {
+                if (!lastRange.diagnoses[diagnosis]) {
+                    lastRange.diagnoses[diagnosis] = 1;
+                } else {
+                    lastRange.diagnoses[diagnosis]++;
+                }
+            });
         } else {
             // Otherwise, add a new range
+            const diagnoses = [
+                row['Principle Diagnosis'],
+                row['Additional Diagnosis 2'],
+                row['Additional Diagnosis 3'],
+                row['Additional Diagnosis 4']
+            ].filter(diagnosis => diagnosis); // Remove empty values
+
+            const diagnosisCounts = diagnoses.reduce((acc, diagnosis) => {
+                acc[diagnosis] = (acc[diagnosis] || 0) + 1;
+                return acc;
+            }, {});
+
             acc[key].push({
                 startDate: row.Date,
                 endDate: row.Date,
                 Location: location,
                 Agency: agency,
-                services: new Set([row.Service]),
-                diagnoses: new Set([row.Diagnosis])
+                services: { [row.Service]: 1 }, // Initialize service counts
+                diagnoses: diagnosisCounts // Initialize diagnosis counts
             });
         }
 
