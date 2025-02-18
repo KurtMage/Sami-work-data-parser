@@ -4,14 +4,19 @@
 
 <h1>Data Parser</h1>
 
-<form action="/action_page.php">
-  <label for="fname">Group Rows by:</label><br>
-  <textarea type="text" id="fname" name="fname">Agency, Location</textarea><br><br>
-  <label for="lname">Collect for each row:</label><br>
-  <textarea type="text" id="lname" name="lname">Date, Service, Principle Diagnosis, Additional Diagnosis 2, Additional Diagnosis 3, Additional Diagnosis 4</textarea><br><br>
-  <p><label for="w3review">Review of W3Schools:</label></p>
-  <textarea id="w3review" name="w3review" rows="4" cols="50"></textarea>
-</form>
+<p><label for="fname">Group Rows by:</label><br>
+<textarea type="text" id="fname" name="fname">Agency, Location</textarea></p>
+
+<p><label for="lname">Collect for each row:</label><br>
+<textarea type="text" id="lname" name="lname">Date, Service, Principle Diagnosis, Additional Diagnosis 2, Additional Diagnosis 3, Additional Diagnosis 4</textarea></p>
+
+<input id="parseDataButton" type="button" value="Parse Data" onclick="parseData();" />
+
+<p><label for="datatext">Review of W3Schools:</label><br>
+<textarea id="datatext" name="datatext" rows="4" cols="100">
+RSN\BHO	Agency	Claim Submit Identifier	Date	Location	CPT Code	Minutes	Principle Diagnosis	Additional Diagnosis 2	Additional Diagnosis 3	Additional Diagnosis 4	EPSDT Indicator	PIC or MMIS ID	Service Provider Type
+411 - King County	10426 - EVERGREEN TREATMENT SERVICE	33333333	01/31/2016	Non residential Substance Abuse Treatment Facility	H0010 - Alcolhol or drug use	5	F11.10 - Opiod abuse, uncomplicated	None	None	None		101184560WA	
+</textarea></p>
 
 </body>
 </html>
