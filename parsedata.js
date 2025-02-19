@@ -26,7 +26,13 @@ function parseData() {
 
 // Generate the HTML table
 function generateTable(data) {
-    const table = document.createElement('table');
+    // const table = document.createElement('table');
+
+    const table = document.getElementById('outputTable');
+
+    while (table.hasChildNodes()) {
+        table.removeChild(table.firstChild);
+    }
     table.style.borderCollapse = 'collapse';
     table.style.width = '100%';
     table.style.border = '1px solid black';
