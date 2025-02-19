@@ -111,4 +111,5 @@ RSN\\BHO	Agency	Claim Submit Identifier	Date	Location	CPT Code	Minutes	Principle
         const rows = table.querySelectorAll('tbody tr');
         expect(rows.length).toBe(0);
     });
+
 });
