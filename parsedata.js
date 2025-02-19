@@ -9,7 +9,11 @@ function parseData() {
     parsedData.sort((a, b) => new Date(a.Date) - new Date(b.Date));
 
     const groupedData = groupByLocationAndAgency(parsedData);
-    formatGroupedData(groupedData);
+    const formattedGroupedData = formatGroupedData(groupedData);
+
+    for (const data of formattedGroupedData) {
+        document.getElementById('content').innerHTML += data + "<br>";
+    }
 
 }
 
@@ -32,6 +36,28 @@ function formatGroupedData(groupedData) {
 
     console.log(formattedData);
     return formattedData;
+}
+
+function groupByLocationAndAgency2(sortedData) {
+
+    const firstRow = sortedData[0];
+    const groupedData = [];
+    groupedData.push(
+        {
+            startDate: firstRow.Date,
+            endDate: firstRow.Date,
+            Location: firstRow.Location,
+            Agency: firstRow.Agency,
+            services: {},
+            diagnosis: {}
+        }
+    );
+    for (const row of sortedData.slice(1)) {
+
+    }
+
+    console.log(groupedData);
+    return groupedData;
 }
 
 function groupByLocationAndAgency(sortedData) {
