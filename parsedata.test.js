@@ -83,7 +83,7 @@ RSN\\BHO	Agency	Claim Submit Identifier	Date	Location	CPT Code	Minutes	Principle
         expect(firstRowCells[1].textContent).toBe('03/21/2017');
         expect(firstRowCells[2].textContent).toBe('Non residential Substance Abuse Treatment Facility');
         expect(firstRowCells[3].textContent).toBe('10426 - EVERGREEN TREATMENT SERVICE');
-        expect(firstRowCells[4].textContent).toBe('H0010 - Alcohol or drug use (2),\nH0011 - Some other service (1)');
+        expect(firstRowCells[4].textContent).toBe('H0010 - Alcohol or drug use (2),\n\nH0011 - Some other service (1)');
         expect(firstRowCells[5].textContent).toBe('F11.10 - Opiod abuse, uncomplicated (3)');
 
         // Verify the second row

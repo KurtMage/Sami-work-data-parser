@@ -81,7 +81,7 @@ function formatGroupedDataForTable(groupedData) {
         // Format services with counts
         const services = Object.entries(range.services)
             .map(([service, count]) => `${service} (${count})`)
-            .join(",\n");
+            .join(",\n\n");
 
         // Format diagnoses with counts
         const diagnoses = Object.entries(range.diagnoses)
