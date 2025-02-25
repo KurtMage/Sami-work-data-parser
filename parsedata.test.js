@@ -49,10 +49,10 @@ describe('parseData', () => {
         // Set up the input data in the textarea
         const inputData = `
 RSN\\BHO	Agency	Claim Submit Identifier	Date	Location	CPT Code	Minutes	Principle Diagnosis	Additional Diagnosis 2	Additional Diagnosis 3	Additional Diagnosis 4	EPSDT Indicator	PIC or MMIS ID	Service Provider Type
-411 - King County	10426 - EVERGREEN TREATMENT SERVICE	33333333	03/21/2017	Non residential Substance Abuse Treatment Facility	H0010 - Alcolhol or drug use	5	F11.10 - Opiod abuse, uncomplicated	None	None	None		101184560WA	
-411 - King County	10426 - EVERGREEN TREATMENT SERVICE	33333333	04/21/2016	Non residential Substance Abuse Treatment Facility	H0010 - Alcolhol or drug use	5	F11.10 - Opiod abuse, uncomplicated	None	None	None		101184560WA	
-411 - King County	10426 - EVERGREEN TREATMENT SERVICE	33333333	02/21/2016	Non residential Substance Abuse Treatment Facility	H0010 - Alcolhol or drug use	5	F11.10 - Opiod abuse, uncomplicated	None	None	None		101184560WA
-411 - King County	22222 - TREATMENT2SERVICE	33333333	05/21/2016	Non residential Substance Abuse Treatment Facility	H0010 - Alcolhol or drug use	5	F11.10 - Opiod abuse, uncomplicated	None	None	None		101184560WA
+411 - King County	10426 - EVERGREEN TREATMENT SERVICE	33333333	03/21/2017	Non residential Substance Abuse Treatment Facility	H0010 - Alcohol or drug use	5	F11.10 - Opiod abuse, uncomplicated	None	None	None		101184560WA	
+411 - King County	10426 - EVERGREEN TREATMENT SERVICE	33333333	04/21/2016	Non residential Substance Abuse Treatment Facility	H0011 - Some other service	5	F11.10 - Opiod abuse, uncomplicated	None	None	None		101184560WA	
+411 - King County	10426 - EVERGREEN TREATMENT SERVICE	33333333	02/21/2016	Non residential Substance Abuse Treatment Facility	H0010 - Alcohol or drug use	5	F11.10 - Opiod abuse, uncomplicated	None	None	None		101184560WA
+411 - King County	22222 - TREATMENT2SERVICE	33333333	05/21/2016	Non residential Substance Abuse Treatment Facility	H0010 - Alcohol or drug use	5	F11.10 - Opiod abuse, uncomplicated	None	None	None		101184560WA
 `;
         document.getElementById('datatext').value = inputData;
 
@@ -83,7 +83,7 @@ RSN\\BHO	Agency	Claim Submit Identifier	Date	Location	CPT Code	Minutes	Principle
         expect(firstRowCells[1].textContent).toBe('03/21/2017');
         expect(firstRowCells[2].textContent).toBe('Non residential Substance Abuse Treatment Facility');
         expect(firstRowCells[3].textContent).toBe('10426 - EVERGREEN TREATMENT SERVICE');
-        expect(firstRowCells[4].textContent).toBe('H0010 - Alcolhol or drug use (3)');
+        expect(firstRowCells[4].textContent).toBe('H0010 - Alcohol or drug use (2),\nH0011 - Some other service (1)');
         expect(firstRowCells[5].textContent).toBe('F11.10 - Opiod abuse, uncomplicated (3)');
 
         // Verify the second row
@@ -92,7 +92,7 @@ RSN\\BHO	Agency	Claim Submit Identifier	Date	Location	CPT Code	Minutes	Principle
         expect(secondRowCells[1].textContent).toBe('05/21/2016');
         expect(secondRowCells[2].textContent).toBe('Non residential Substance Abuse Treatment Facility');
         expect(secondRowCells[3].textContent).toBe('22222 - TREATMENT2SERVICE');
-        expect(secondRowCells[4].textContent).toBe('H0010 - Alcolhol or drug use (1)');
+        expect(secondRowCells[4].textContent).toBe('H0010 - Alcohol or drug use (1)');
         expect(secondRowCells[5].textContent).toBe('F11.10 - Opiod abuse, uncomplicated (1)');
     });
 

@@ -3,3 +3,7 @@
     width: 100%;
     border: 1px solid black;
 }
+
+td{
+  white-space: pre-line;
+}

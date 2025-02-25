@@ -17,9 +17,13 @@ function parseData() {
     // }
 
     const tableData = formatGroupedDataForTable(groupedData)   
+    console.log("TableData:");
+    console.log(tableData);
 
     // Insert the table into the DOM
     const table = generateTable(tableData);
+    console.log("table:");
+    console.log(table);
     document.body.appendChild(table);
 
 }
@@ -61,6 +65,7 @@ function generateTable(data) {
             td.textContent = text;
             td.style.border = '1px solid black';
             td.style.padding = '8px';
+            // td.style.whiteSpace = 'pre-line';
             row.appendChild(td);
         });
         tbody.appendChild(row);
@@ -76,7 +81,7 @@ function formatGroupedDataForTable(groupedData) {
         // Format services with counts
         const services = Object.entries(range.services)
             .map(([service, count]) => `${service} (${count})`)
-            .join(', ');
+            .join(",\n");
 
         // Format diagnoses with counts
         const diagnoses = Object.entries(range.diagnoses)
