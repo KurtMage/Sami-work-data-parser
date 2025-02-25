@@ -65,7 +65,7 @@ function generateTable(data) {
             td.textContent = text;
             td.style.border = '1px solid black';
             td.style.padding = '8px';
-            // td.style.whiteSpace = 'pre-line';
+            td.style.whiteSpace = 'pre-line';
             row.appendChild(td);
         });
         tbody.appendChild(row);
